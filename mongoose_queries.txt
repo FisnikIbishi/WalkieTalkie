@@ -1,0 +1,58 @@
+// const User = require('../schema/user');
+// const Message = require('../schema/message');
+// const Friend = require('../schema/friend');
+// const FriendRequest = require('../schema/friendRequest');
+// const MatchMaking = require('../schema/matchMaking');
+
+// mongoose.connect('mongodb+srv://fi38495:aDaTKlyvAnljbOXU@chatdatabase.gm4dyyj.mongodb.net/test', { useNewUrlParser: true, useUnifiedTopology: true });
+
+// // create a new user and save it to the database
+// const user1 = new User({
+//     username: 'John Doe 1',
+//     avatar: 'avatar',
+//     email: 'john.doe@example.com',
+//     password: '123456$12',
+//     description: 'description',
+// });
+
+// const user2 = new User({
+//     username: 'John Doe 3',
+//     avatar: 'avatar',
+//     email: 'john.doe2@example.com',
+//     password: '123456$12',
+//     description: 'description',
+// });
+
+// const message = new Message({
+//     text: 'First Message',
+//     sender: '642064c7d28914643c7115aa',
+//     recipient: '642064c7d28914643c7115aa'
+// });
+
+// const friend = new Friend({
+//     user_id: '642064c7d28914643c7115aa',
+//     friend_id: '642064c7d28914643c7115aa'
+// });
+
+// const friendRequest = new FriendRequest({
+//     sender: '642064c7d28914643c7115aa',
+//     recipient: '642064c7d28914643c7115aa'
+// });
+
+// const matchMaking = new MatchMaking({
+//     user_id: '642064c7d28914643c7115aa'
+// });
+
+// router.get("/", async (req, res) => {
+//     try {
+//         await user1.save();
+//         await user2.save();
+//         await message.save();
+//         await friend.save();
+//         await friendRequest.save();
+//         await matchMaking.save();
+//         console.log('Users saved successfully!');
+//     } catch (err) {
+//         console.log(err);
+//     }
+// });
