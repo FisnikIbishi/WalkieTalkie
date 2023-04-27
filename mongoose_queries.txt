@@ -4,8 +4,6 @@
 // const FriendRequest = require('../schema/friendRequest');
 // const MatchMaking = require('../schema/matchMaking');
 
-// mongoose.connect('mongodb+srv://fi38495:aDaTKlyvAnljbOXU@chatdatabase.gm4dyyj.mongodb.net/test', { useNewUrlParser: true, useUnifiedTopology: true });
-
 // // create a new user and save it to the database
 // const user1 = new User({
 //     username: 'John Doe 1',
