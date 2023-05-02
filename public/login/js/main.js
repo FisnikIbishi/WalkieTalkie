@@ -30,7 +30,7 @@
         }
 
         if (check) {
-            window.location.href = '../home/index.html';
+            window.location.href = '../home';
         }
     });
 
@@ -67,5 +67,7 @@
 
         $(thisAlert).removeClass('alert-validate');
     }
+
+    
 
 })(jQuery);

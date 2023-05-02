@@ -1,15 +1,18 @@
 
+
 let user = {
 	id: 0,
-	name: "Anish",
+	name: 'ok',
 	number: "+91 91231 40293",
 	pic: "/home/images/asdsd12f34ASd231.png"
-};
+  };
+  
+  
 
 let contactList = [
 	{
 		id: 0,
-		name: "Anish",
+		name: "okokokoko",
 		number: "+91 91231 40293",
 		pic: "/home/images/asdsd12f34ASd231.png",
 		lastSeen: "Apr 29 2018 17:58:02"
@@ -32,14 +35,14 @@ let contactList = [
 		id: 3,
 		name: "Suvro Mobile",
 		number: "+91 98232 63547",
-		pic: "home/images/Alsdk120asdj913jk.jpg",
+		pic: "/home/images/Alsdk120asdj913jk.jpg",
 		lastSeen: "Apr 29 2018 11:16:42"
 	},
 	{
 		id: 4,
 		name: "Dee",
 		number: "+91 72781 38213",
-		pic: "home/images/dsaad212312aGEA12ew.png",
+		pic: "/home/images/dsaad212312aGEA12ew.png",
 		lastSeen: "Apr 27 2018 17:28:10"
 	}
 ];
@@ -49,7 +52,7 @@ let groupList = [
 		id: 1,
 		name: "Programmers",
 		members: [0, 1, 3],
-		pic: "home/images/0923102932_aPRkoW.jpg"
+		pic: "/home/images/0923102932_aPRkoW.jpg"
 	},
 	{
 		id: 2,
@@ -178,6 +181,7 @@ let messages = [
 	}
 ];
 
+
 let MessageUtils = {
 	getByGroupId: (groupId) => {
 		return messages.filter(msg => msg.recvIsGroup && msg.recvId === groupId);
@@ -205,3 +209,6 @@ let MessageUtils = {
 		messages.push(msg);
 	}
 };
+
+
+

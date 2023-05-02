@@ -160,7 +160,7 @@
         $(this).trigger("reset"); // reset form after submission
     
         // If there are no errors, redirect to the home page
-        window.location.href = "../home/index.html";
+        window.location.href = "/home";
       }
     });
     

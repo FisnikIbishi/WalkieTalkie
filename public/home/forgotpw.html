@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Forgot Password</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+      }
+      .form-container {
+        max-width: 500px;
+        margin: auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+      }
+      h1 {
+        text-align: center;
+        color: #333;
+      }
+      label {
+        display: block;
+        margin-bottom: 10px;
+        color: #333;
+      }
+      input[type="email"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: none;
+        border-radius: 3px;
+        box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.1);
+      }
+      button[type="submit"] {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        background-color: #333;
+        color: #fff;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+      button[type="submit"]:hover {
+        background-color: #555;
+      }
+    </style>
+
+  </head>
+  <body>
+    <div class="form-container">
+      <div>
+  <h2>Forgot Password</h2>
+  <form>
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email">
+    <p id="error-message" style="color: red;"></p>
+    <button type="submit" id="reset-password-btn">Reset Password</button>
+  </form>
+</div>
+
+  
+  <!-- JavaScript code to handle form submission -->
+  <script>
+   const form = document.querySelector("form");
+const emailInput = document.querySelector("#email");
+const resetPasswordBtn = document.querySelector("#reset-password-btn");
+const errorMessage = document.querySelector("#error-message");
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const email = emailInput.value;
+
+  if (email === "") {
+    errorMessage.textContent = "Please enter your email";
+  } else {
+    // Send email to reset password
+    alert("We have sent an email to reset your password.");
+    // Redirect to login page
+    window.location.href = "/login";
+  }
+});
+
+resetPasswordBtn.addEventListener("click", () => {
+  errorMessage.textContent = "";
+});
+
+  </script>
+  
+    </div>
+  </body>
+</html>
