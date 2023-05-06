@@ -2,7 +2,7 @@
 
 let user = {
 	id: 0,
-	name: 'ok',
+	name: "",
 	number: "+91 91231 40293",
 	pic: "/home/images/asdsd12f34ASd231.png"
   };

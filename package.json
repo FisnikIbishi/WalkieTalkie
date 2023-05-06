@@ -1,17 +1,27 @@
 {
-  "name": "chatapp",
+  "name": "waklietalkie",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "debug": "nodemon --inspect ./bin/www"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+<<<<<<< HEAD
     "express-session": "^1.17.3",
     "mongoose": "^7.0.3"
+=======
+    "express-jwt": "^8.4.1",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^7.0.3",
+    "validator": "^13.9.0"
+>>>>>>> 53bfafdeac39a294b23b9772fd3d179cf5a04cad
   }
 }

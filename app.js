@@ -1,10 +1,24 @@
 const express = require('express');
+<<<<<<< HEAD
 const session = require('express-session');
 const index = require('./public/home/index');
+=======
+var cookieParser = require('cookie-parser');
+var mongoose = require('mongoose');
+const index = require('./routes/index')
+const login = require('./routes/login')
+const register = require('./routes/register')
+require('dotenv').config();
+>>>>>>> 53bfafdeac39a294b23b9772fd3d179cf5a04cad
 
 const app = express();
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+
 app.use(express.static(__dirname + '/public'));
+<<<<<<< HEAD
 
 app.use(session({
   secret: 'your-secret-key',
@@ -36,6 +50,18 @@ app.get('/logout', (req, res) => {
 });
 
 app.use('/', index);
+=======
+app.use(index);
+app.use(login);
+app.use(register);
+
+//Set up default mongoose connection
+mongoose.connect(process.env.MONGODB_URL).then(() => {
+  console.log('connected to database');
+}).catch(() => {
+  console.log('failed connected to database');
+});
+>>>>>>> 53bfafdeac39a294b23b9772fd3d179cf5a04cad
 
 // start the server
 const port = process.env.PORT || 3000;
