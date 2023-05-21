@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', function (req, res) {
-    res.sendFile('index.html', { root: './public/home/html/' });
+    res.render('home');
 });
 
 module.exports = router;

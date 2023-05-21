@@ -3,7 +3,7 @@ var userController = require('../controllers/userController.js');
 const router = express.Router();
 
 router.get('/login', function (req, res) {
-    res.sendFile('index.html', { root: './public/login/html/' });
+    res.render('login');
 });
 
 router.post('/login', userController.login);
