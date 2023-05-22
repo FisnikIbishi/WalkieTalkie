@@ -3,13 +3,14 @@ function authorize(roles = []) {
         async (req, res, next) => {
             try {
                 const token = req.cookies.token;
-                console.log('log token: ' + token)
-                if (!token) {
-                    res.redirect('/login');
+                if (token) {
+                    res.redirect('/');
+                }
+                else {
+                    next();
                 }
 
-                res.redirect('/')
-            } catch (error) { 
+            } catch (error) {
                 console.log('error: ' + error)
             }
         }
