@@ -290,4 +290,25 @@ let init = () => {
 	console.log("Click the Image at top-left to open settings.");
 };
 
+function showPopup() {
+    document.getElementById('overlay').style.display = 'block';
+    document.getElementById('popup').style.display = 'block';
+  }
+
+  function hidePopup() {
+    document.getElementById('overlay').style.display = 'none';
+    document.getElementById('popup').style.display = 'none';
+  }
+
+  function addFriend(event) {
+    event.preventDefault();
+    const username = document.getElementById('username').value;
+    // Perform the logic to add a friend based on the entered username
+    console.log('Adding friend:', username);
+    // Reset the form
+    document.getElementById('addFriendForm').reset();
+    // Close the popup
+    hidePopup();
+  }
+
 init();
