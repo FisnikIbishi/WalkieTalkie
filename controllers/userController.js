@@ -15,7 +15,9 @@ module.exports = {
         }
     },
     register: async function (req, res) {
+        console.log('register new user')
         const user = new User(req.body);
+        console.log("new user " + req.body)
         user.newAuthToken();
         res.status(200).json({ id: user.id, email: user.email, description: user.description, token: user.token })
     },

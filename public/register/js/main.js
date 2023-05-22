@@ -73,14 +73,14 @@
         }
         
         
-        else if ($(input).attr('name') == 'pass') {
+        else if ($(input).attr('name') == 'password') {
             if (!value.match(/[A-Z]/) || !value.match(/[0-9]/) || !value.match(/[$@$!%*#?&]/)) {
                 
                 return false;
             }
         }
         else if ($(input).attr('name') == 'confirm-pass') {
-            if (value != $('input[name="pass"]').val()) {
+            if (value != $('input[name="password"]').val()) {
                 
                 return false;
             }
@@ -127,7 +127,7 @@
         else if(name == 'birthday') {
             return 'Birthday must be 16+';
         }
-        else if(name == 'pass') {
+        else if(name == 'password') {
             return 'Password must have at least one Capital letter, one number and one symbol';
         }
         else if(name == 'confirm-pass') {
@@ -141,28 +141,28 @@
 
 
     
-    const registerButton = document.getElementById('register-btn');
+    // const registerButton = document.getElementById('register-btn');
 
-    registerButton.addEventListener('click', () => {
-      // Validation code
-      var check = true;
-      var input = $('.validate-input .input100');
+    // registerButton.addEventListener('click', () => {
+    //   // Validation code
+    //   var check = true;
+    //   var input = $('.validate-input .input100');
     
-      for(var i=0; i<input.length; i++) {
-        if(validate(input[i]) == false){
-          showValidate(input[i]);
-          check=false;
-        }
-      }
+    //   for(var i=0; i<input.length; i++) {
+    //     if(validate(input[i]) == false){
+    //       showValidate(input[i]);
+    //       check=false;
+    //     }
+    //   }
     
-      if (check) {
-        alert("Form submitted successfully!");
-        $(this).trigger("reset"); // reset form after submission
+    //   if (check) {
+    //     alert("Form submitted successfully!");
+    //     $(this).trigger("reset"); // reset form after submission
     
-        // If there are no errors, redirect to the home page
-        window.location.href = "/home";
-      }
-    });
+    //     // If there are no errors, redirect to the home page
+    //     window.location.href = "/home";
+    //   }
+    // });
     
     
 

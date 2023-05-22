@@ -8,6 +8,5 @@ router.get('/login', authorize(), function (req, res) {
 });
 
 router.post('/login', userController.login);
-router.post('/register', authorize(), userController.register);
 
 module.exports = router;
