@@ -5,24 +5,19 @@ const userRepository = require('../repositories/userRepository.js');
 module.exports = {
     login: async function (req, res) {
         try {
+            console.log('Bodyy: ' + req.body.email)
             const user = await User.checkValidCredentials(req.body.email, req.body.password);
-            //await user.newAuthToken()
-            console.log(user.username)
-            res.status(200).json(
-                {
-                    id: user._id,
-                    username: user.name,
-                    email: user.email,
-                    description: "Description..."
-                });
+            console.log('tokeeeen: ' + user.token)
+            res.cookie('token', user.token, { maxAge: 3600000, secure: true, httpOnly: true });
+            res.redirect('/')
         } catch (error) {
-            res.status(400).json({ message: error })
+            res.status(400).json({ message: error });
         }
     },
     register: async function (req, res) {
         const user = new User(req.body);
-        const token = user.newAuthToken();
-        res.status(200).json({ token: token })
+        user.newAuthToken();
+        res.status(200).json({ id: user.id, email: user.email, description: user.description, token: user.token })
     },
     logOut: async function (req, res) {
         try {
