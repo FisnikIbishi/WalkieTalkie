@@ -18,9 +18,7 @@
     [ Validate ]*/
     var input = $('.validate-input .input100');
 
-    $('.validate-form').on('submit',function(event){
-        event.preventDefault(); // prevent form submission
-        
+    $('.validate-form').on('submit',function(event){        
         var check = true;
         
         for(var i=0; i<input.length; i++) {
@@ -30,8 +28,8 @@
             }
         }
 
-        if (check) {
-            $(this).trigger("reset"); // reset form after submission
+        if (!check) {
+            event.preventDefault(); // prevent form submission
         }
     });
 

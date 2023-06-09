@@ -1,8 +1,9 @@
 const express = require('express');
 var userController = require('../controllers/userController.js');
 const router = express.Router();
+const authorize = require('../middlewares/authMiddleware');
 
-router.get('/register', function (req, res) {
+router.get('/register', authorize(), function (req, res) {
     res.render('register');
 });
 

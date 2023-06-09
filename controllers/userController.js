@@ -5,9 +5,7 @@ const userRepository = require('../repositories/userRepository.js');
 module.exports = {
     login: async function (req, res) {
         try {
-            console.log('Bodyy: ' + req.body.email)
             const user = await User.checkValidCredentials(req.body.email, req.body.password);
-            console.log('tokeeeen: ' + user.token)
             res.cookie('token', user.token, { maxAge: 3600000, secure: true, httpOnly: true });
             res.redirect('/')
         } catch (error) {
@@ -15,18 +13,20 @@ module.exports = {
         }
     },
     register: async function (req, res) {
-        console.log('register new user')
+      try {
         const user = new User(req.body);
-        console.log("new user " + req.body)
         user.newAuthToken();
-        res.status(200).json({ id: user.id, email: user.email, description: user.description, token: user.token })
+        res.redirect('/');
+      } catch (error) {
+        res.status(400).json({ message: error });
+      }
     },
     logOut: async function (req, res) {
         try {
             await userRepository.logOut(req.user._id);
-            res.status(200).json({ message: 'User logged out successfully!' })
+            res.status(200).json({ message: 'User logged out successfully!' });
         } catch (error) {
-            res.status(500).send(error)
+            res.status(500).send(error);
         }
     }
 }
