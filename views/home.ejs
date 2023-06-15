@@ -138,12 +138,15 @@
 	<div class="popup" id="popup">
 		<span class="close" onclick="hidePopup()">&times;</span>
 		<h3>Add Friend by Username</h3>
-		<form id="addFriendForm" onsubmit="addFriend(event)">
-			<label for="username">Enter username:</label>
-			<input type="text" id="username" name="username" required>
+		<form id="addFriendForm" onsubmit="searchUsers(event)">
+			<label for="user_name">Enter username:</label>
+			<input type="text" id="user_name" name="user_name" required>
 			<br><br>
-			<input type="submit" value="Add">
+			<input type="submit" value="Search"><br><br>
 		</form>
+
+		<ul id="user_list">
+		</ul>
 	</div>
 
 	<script src="/socket.io/socket.io.js"></script>

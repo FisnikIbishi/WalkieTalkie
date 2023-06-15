@@ -22,6 +22,7 @@ const DOM = {
 	inputName: getById("input-name"),
 	username: getById("username"),
 	displayPic: getById("display-pic"),
+	userNameInput: getById("user_name")
 };
 
 let mClassList = (element) => {
@@ -259,56 +260,110 @@ let init = () => {
 
 	const socket = io();
 
-		window.addEventListener("load", (event) => {
-			document.getElementById('input').addEventListener('keypress', function (e) {
-				if (e.key === 'Enter') {
-					e.preventDefault();
-					let value = DOM.messageInput.value;
-					DOM.messageInput.value = "";
-					if (value === "") return;
+	window.addEventListener("load", (event) => {
+		document.getElementById('input').addEventListener('keypress', function (e) {
+			if (e.key === 'Enter') {
+				e.preventDefault();
+				let value = DOM.messageInput.value;
+				DOM.messageInput.value = "";
+				if (value === "") return;
 
-					let msg = {
-						sender: user.id,
-						body: value,
-						time: mDate().toString(),
-						status: 1,
-						recvId: chat.isGroup ? chat.group.id : chat.contact.id,
-						recvIsGroup: chat.isGroup
-					};
+				let msg = {
+					sender: user.id,
+					body: value,
+					time: mDate().toString(),
+					status: 1,
+					recvId: chat.isGroup ? chat.group.id : chat.contact.id,
+					recvIsGroup: chat.isGroup
+				};
 
-					sendMessage(msg);
-					socket.emit('new_message', msg);
-				}
-			});
+				sendMessage(msg);
+				socket.emit('new_message', msg);
+			}
 		});
 
-		socket.on('new_message', (msg) => {
-			console.log('mesageeeeee', msg)
-			sendMessage(msg);
+		document.getElementById('user_name').on('keyup change', function () {
+			var text = $(this).val();
+			alert(text)
 		});
+	});
+
+	socket.on('new_message', (msg) => {
+		console.log('mesageeeeee', msg)
+		sendMessage(msg);
+	});
 
 	console.log("Click the Image at top-left to open settings.");
 };
 
 function showPopup() {
-    document.getElementById('overlay').style.display = 'block';
-    document.getElementById('popup').style.display = 'block';
-  }
+	document.getElementById('overlay').style.display = 'block';
+	document.getElementById('popup').style.display = 'block';
+}
 
-  function hidePopup() {
-    document.getElementById('overlay').style.display = 'none';
-    document.getElementById('popup').style.display = 'none';
-  }
+function hidePopup() {
+	document.getElementById('overlay').style.display = 'none';
+	document.getElementById('popup').style.display = 'none';
+}
 
-  function addFriend(event) {
-    event.preventDefault();
-    const username = document.getElementById('username').value;
-    // Perform the logic to add a friend based on the entered username
-    console.log('Adding friend:', username);
-    // Reset the form
-    document.getElementById('addFriendForm').reset();
-    // Close the popup
-    hidePopup();
-  }
+const search = async (username) => {
+	const response = await fetch('http://localhost:3000/api/users/' + username);
+	const users = await response.json(); //extract JSON from the http response
+	const list = document.getElementById('user_list');
+
+	list.innerHTML = "";
+	users.forEach(user => {
+		const listItem = document.createElement("li");
+
+		// Create an <img> element for the avatar
+		const avatarImg = document.createElement("img");
+		avatarImg.src = user.avatar;
+		listItem.appendChild(avatarImg);
+
+		// Create a <span> element for the name
+		const nameSpan = document.createElement("span");
+		nameSpan.textContent = user.username;
+		listItem.appendChild(nameSpan);
+
+		// Create a <button> element
+		const button = document.createElement("input");
+		button.type = "submit";
+		button.value = "Add Friend";
+		button.addEventListener("click", function (event) {
+			event.preventDefault();
+			addFriend(button, user._id)
+		});
+		listItem.appendChild(button);
+
+		// Add the <li> element to the <ul>
+		list.appendChild(listItem);
+	});
+}
+
+function searchUsers(event) {
+	event.preventDefault();
+	const username = document.getElementById('user_name').value;
+	// Perform the logic to add a friend based on the entered username
+	search(username);
+	// Reset the form
+	document.getElementById('addFriendForm').reset();
+}
+
+async function addFriend(button, id) {
+	const response = await fetch('http://localhost:3000/api/users', {
+		method: 'POST',
+		body: JSON.stringify({
+			userId: id
+		}),
+		headers: {
+			'Content-Type': 'application/json'
+		}
+	});
+
+	if (response.ok) {
+		const data = await response.json(); //extract JSON from the http response
+		button.style.display = "none"; 
+	}
+}
 
 init();
