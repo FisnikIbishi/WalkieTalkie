@@ -27,6 +27,9 @@
 	display: none;
 }
 
+
+
+
 .chat-list-item {
 	background: white;
 	cursor: pointer;
@@ -71,6 +74,17 @@
 #input-area {
 	background: hsl(0, 0%, 95%);
 }
+
+.nav-item.dropdown {
+  display: inline-block;
+}
+
+.nav-link.dropdown-toggle {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 10px; /* Adjust this value as needed */
+}
+
 
 #input-area #input {
 	outline: none;
@@ -144,6 +158,7 @@
     display: none;
     z-index: 999;
   }
+  
 
   /* Styles for the popup */
   .popup {
@@ -160,6 +175,114 @@
     max-width: 400px;
   }
 
+  #friendRequestsOverlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+  }
+  
+  #friendRequestsPopup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    max-width: 90%;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 10000;
+  }
+  
+  #friendRequestsPopup .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 20px;
+    color: #999;
+  }
+  
+  #friendRequestsPopup h3 {
+    margin-top: 0;
+    color: #333;
+  }
+  
+  #friendRequestsPopup ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  #friendRequestsPopup .friend-request {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    border-bottom: 1px solid black; /* Add this line */
+    padding-bottom: 10px; /* Add this line for spacing */
+  }
+  
+  
+  
+  #friendRequestsPopup .friend-request img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  #friendRequestsPopup .friend-request .friend-details {
+    flex-grow: 1;
+  }
+  
+  #friendRequestsPopup .friend-request .friend-name {
+    margin: 0;
+    font-weight: bold;
+  }
+  
+  #friendRequestsPopup .friend-request .friend-message {
+    margin: 0;
+  }
+  
+  #friendRequestsPopup .friend-request .accept-button,
+  #friendRequestsPopup .friend-request .reject-button {
+    margin-top: 10px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    background-color: #4caf50;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  #friendRequestsPopup .friend-request .reject-button {
+    background-color: #f44336;
+  }
+
+  .friend-requests-count {
+    background-color: red;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 1px 6px;
+    border-radius: 50%;
+    position: absolute;
+    top: -3px;
+    right: 55px;
+  }
+  
+  
+  
+  /* Add additional styling for the content inside the popup as needed */
+  
+  
   /* Styles for the close button */
   .close {
     position: absolute;

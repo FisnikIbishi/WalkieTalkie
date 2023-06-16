@@ -11,6 +11,10 @@
 		integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
 	<link rel="stylesheet" href="../home/css/style.css">
 	<link rel="stylesheet" href="../public/home/css/style.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+	
+
+</head>
 </head>
 
 <body>
@@ -18,16 +22,80 @@
 	<div class="container-fluid" id="main-container">
 		<div class="row h-100">
 			<div class="col-12 col-sm-5 col-md-4 d-flex flex-column" id="chat-list-area" style="position:relative;">
-
+				
 				<!-- Navbar -->
 				<div class="row d-flex flex-row align-items-center p-2" id="navbar">
 					<img alt="Profile Photo" class="img-fluid rounded-circle mr-2" style="height:50px; cursor:pointer;"
 						onclick="showProfileSettings()" id="display-pic">
 					<div class="text-white font-weight-bold" id="username"></div>
+					
 					<div class="nav-item dropdown ml-auto">
-						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="##" role="button"
-							aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-v text-white"></i></a>
+
+						<a class="nav-link dropdown-toggle" data-toggle="requests" href="#" onclick="showFriendRequestsPopup(event)" role="button" aria-haspopup="true" aria-expanded="false">
+							<i class="fas fa-user-friends" style="color: white;"></i>
+							<span class="friend-requests-count">2</span>
+						  </a>
+						  
+						  <div class="overlay" id="friendRequestsOverlay"></div>
+				<div class="popup" id="friendRequestsPopup">
+					<span class="close" onclick="hideFriendRequestsPopup()">&times;</span>
+					<h3>Friend Requests</h3>
+					<ul id="friendRequestsList">
+						<li>
+						<div class="friend-request">
+							<img src="friend_avatar.jpg" alt="Friend Avatar">
+							<div class="friend-details">
+							<p class="friend-name">Test</p>
+							<p class="friend-message">Would you like to be friends?</p>
+							<button class="accept-button">Accept</button>
+							<button class="reject-button">Reject</button>
+							</div>
+						</div>
+						</li>
+						<li>
+						<div class="friend-request">
+						<img src="friend_avatar.jpg" alt="Friend Avatar">
+						<div class="friend-details">
+							<p class="friend-name">Test123</p>
+							<p class="friend-message">Would you like to be friends?</p>
+							<button class="accept-button">Accept</button>
+							<button class="reject-button">Reject</button>
+						</div>
+						</div>
+						</li>
+					</ul>
+				</div>
+				<script>
+				function showFriendRequestsPopup() {
+					document.getElementById('friendRequestsOverlay').style.display = 'block';
+					document.getElementById('friendRequestsPopup').style.display = 'block';
+					}
+
+				function hideFriendRequestsPopup() {
+					document.getElementById('friendRequestsOverlay').style.display = 'none';
+					document.getElementById('friendRequestsPopup').style.display = 'none';
+					}
+				// Assuming you have a variable `friendRequestsCount` representing the number of friend requests
+				var friendRequestsCount = 2; // Replace with your actual friend requests count
+
+				// Update the friend requests count in the HTML
+				document.querySelector('.friend-requests-count').textContent = friendRequestsCount;
+
+
+				</script>
+
+						  
+
+						 
+						  </a>
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="##"  role="button" aria-haspopup="true" aria-expanded="false">
+						  <i class="fas fa-ellipsis-v text-white"></i>
+						</a>
+					  	 	
+
+
 						<div class="dropdown-menu dropdown-menu-right">
+							
 							<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
 								onclick="showPopup(event)" role="button" aria-haspopup="true" aria-expanded="false">Add
 								Friend<i class="fas fa-ellipsis-v text-white"></i></a>
@@ -133,6 +201,7 @@
 			</div>
 		</div>
 	</div>
+	
 
 	<div class="overlay" id="overlay"></div>
 	<div class="popup" id="popup">
@@ -149,6 +218,7 @@
 		</ul>
 	</div>
 
+
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
 		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -163,6 +233,7 @@
 	<script src="/home/js/date-utils.js"></script>
 	<script src="/home/js/script.js"></script>
 	<script src="/app.js"></script>
+	<script src="FRpopup.js"></script>
 </body>
 
 </html>
