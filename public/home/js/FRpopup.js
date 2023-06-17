@@ -12,4 +12,23 @@ function showFriendRequestsPopup() {
 
   // Update the friend requests count in the HTML
   document.querySelector('.friend-requests-count').textContent = friendRequestsCount;
+
+  function searchFriendRequests() {
+    const input = document.getElementById('friendSearchInput');
+    const filter = input.value.toLowerCase();
+    const friendRequests = document.querySelectorAll('.friend-request');
+  
+    friendRequests.forEach((request) => {
+      const name = request.querySelector('.friend-name').innerText.toLowerCase();
+      if (name.includes(filter)) {
+        request.style.display = 'flex';
+      } else {
+        request.style.display = 'none';
+      }
+    });
+  }
+  
+  // Add event listener to the search input
+  document.getElementById('friendSearchInput').addEventListener('input', searchFriendRequests);
+  
   

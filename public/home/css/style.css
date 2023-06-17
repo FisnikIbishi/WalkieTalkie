@@ -219,7 +219,24 @@
     list-style: none;
     padding: 0;
     margin: 0;
+    max-height: 270px; /* Adjust the maximum height as per your needs */
+    overflow-y: auto;
   }
+  
+  .send-button {
+    cursor: pointer;
+    color: inherit;
+  }
+  
+  .send-button:hover {
+    color: rgb(23, 135, 255);
+  }
+  
+  .send-button.active {
+    color: rgb(23, 135, 255);
+  }
+  
+  
   
   #friendRequestsPopup .friend-request {
     display: flex;

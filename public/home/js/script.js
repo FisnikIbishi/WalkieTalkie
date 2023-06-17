@@ -25,6 +25,7 @@ const DOM = {
 	userNameInput: getById("user_name")
 };
 
+
 let mClassList = (element) => {
 	return {
 		add: (className) => {
@@ -227,12 +228,34 @@ let showChatList = () => {
 	}
 };
 
+//send button check and read color
+function checkInput() {
+	var input = document.getElementById('input');
+	var sendButton = document.querySelector('.send-button');
+  
+	if (input.value.trim() !== '') {
+	  sendButton.classList.add('active');
+	} else {
+	  sendButton.classList.remove('active');
+	}
+  }
+  function resetInput(event) {
+	if (event.keyCode === 13) { // Check if the key pressed is Enter (keyCode 13)
+	  var input = document.getElementById('input');
+	  var sendButton = document.querySelector('.send-button');
+	
+	  sendButton.classList.remove('active'); // Remove the 'active' class
+	}
+  }
+
+
 let sendMessage = (msg) => {
 	addMessageToMessageArea(msg);
 	MessageUtils.addMessage(msg);
 	generateChatList();
 	//socket.emit('new_message', msg);
 };
+
 
 let showProfileSettings = () => {
 	DOM.profileSettings.style.left = 0;
