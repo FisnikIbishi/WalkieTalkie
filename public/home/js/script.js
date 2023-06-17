@@ -22,7 +22,8 @@ const DOM = {
 	inputName: getById("input-name"),
 	username: getById("username"),
 	displayPic: getById("display-pic"),
-	userNameInput: getById("user_name")
+	userNameInput: getById("user_name"),
+	btnSend: getById("btn-send"),
 };
 
 
@@ -232,28 +233,24 @@ let showChatList = () => {
 function checkInput() {
 	var input = document.getElementById('input');
 	var sendButton = document.querySelector('.send-button');
-  
+
 	if (input.value.trim() !== '') {
-	  sendButton.classList.add('active');
+		sendButton.classList.add('active');
 	} else {
-	  sendButton.classList.remove('active');
+		sendButton.classList.remove('active');
 	}
-  }
-  function resetInput(event) {
-	if (event.keyCode === 13) { // Check if the key pressed is Enter (keyCode 13)
-	  var input = document.getElementById('input');
-	  var sendButton = document.querySelector('.send-button');
-	
-	  sendButton.classList.remove('active'); // Remove the 'active' class
-	}
-  }
+}
+function resetInput() {
+	var sendButton = document.querySelector('.send-button');
+	sendButton.classList.remove('active'); // Remove the 'active' class
+}
 
 
 let sendMessage = (msg) => {
 	addMessageToMessageArea(msg);
 	MessageUtils.addMessage(msg);
 	generateChatList();
-	//socket.emit('new_message', msg);
+	resetInput()
 };
 
 
@@ -272,6 +269,25 @@ window.addEventListener("resize", e => {
 	if (window.innerWidth > 575) showChatList();
 });
 
+function createMessageAndSend() {
+	let value = DOM.messageInput.value;
+	DOM.messageInput.value = "";
+	if (value === "") return;
+
+	let msg = {
+		sender: user.id,
+		body: value,
+		time: mDate().toString(),
+		status: 1,
+		recvId: chat.isGroup ? chat.group.id : chat.contact.id,
+		recvIsGroup: chat.isGroup
+	};
+
+	sendMessage(msg);
+	socket.emit('new_message', msg);
+}
+
+
 let init = () => {
 	DOM.username.innerHTML = user.name;
 	DOM.displayPic.src = user.pic;
@@ -287,27 +303,13 @@ let init = () => {
 		document.getElementById('input').addEventListener('keypress', function (e) {
 			if (e.key === 'Enter') {
 				e.preventDefault();
-				let value = DOM.messageInput.value;
-				DOM.messageInput.value = "";
-				if (value === "") return;
-
-				let msg = {
-					sender: user.id,
-					body: value,
-					time: mDate().toString(),
-					status: 1,
-					recvId: chat.isGroup ? chat.group.id : chat.contact.id,
-					recvIsGroup: chat.isGroup
-				};
-
-				sendMessage(msg);
-				socket.emit('new_message', msg);
+				createMessageAndSend();
 			}
 		});
 
-		document.getElementById('user_name').on('keyup change', function () {
-			var text = $(this).val();
-			alert(text)
+		DOM.btnSend.addEventListener("click", (e) => {
+			e.preventDefault();
+			createMessageAndSend();
 		});
 	});
 
@@ -385,7 +387,7 @@ async function addFriend(button, id) {
 
 	if (response.ok) {
 		const data = await response.json(); //extract JSON from the http response
-		button.style.display = "none"; 
+		button.style.display = "none";
 	}
 }
 

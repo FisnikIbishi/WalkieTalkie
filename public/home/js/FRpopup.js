@@ -1,10 +1,10 @@
 function showFriendRequestsPopup() {
-    document.getElementById('friendRequestsOverlay').style.display = 'block';
+    document.getElementById('overlay').style.display = 'block';
     document.getElementById('friendRequestsPopup').style.display = 'block';
   }
   
   function hideFriendRequestsPopup() {
-    document.getElementById('friendRequestsOverlay').style.display = 'none';
+    document.getElementById('overlay').style.display = 'none';
     document.getElementById('friendRequestsPopup').style.display = 'none';
   }
   // Assuming you have a variable `friendRequestsCount` representing the number of friend requests
