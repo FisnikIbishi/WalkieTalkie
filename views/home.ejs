@@ -30,12 +30,18 @@
 					<div class="text-white font-weight-bold" id="username"></div>
 
 					<div class="nav-item dropdown ml-auto">
-
-						<a class="nav-link dropdown-toggle" data-toggle="requests" href="#"
+						<!-- <a class="nav-link dropdown-toggle" id="notifications-icon" data-toggle="requests" href="#"
 							onclick="showFriendRequestsPopup(event)" role="button" aria-haspopup="true"
 							aria-expanded="false">
+							<i class="fas fa-bell" style="color: white;"></i>
+							<span class="friend-requests-count">0</span>
+						</a> -->
+
+						<a class="nav-link dropdown-toggle" id="friend-request-icon" style="display: none;"
+							data-toggle="requests" href="#" onclick="showFriendRequestsPopup(event)" role="button"
+							aria-haspopup="true" aria-expanded="false">
 							<i class="fas fa-user-friends" style="color: white;"></i>
-							<span class="friend-requests-count">2</span>
+							<span class="friend-requests-count">0</span>
 						</a>
 
 						</a>
@@ -82,14 +88,15 @@
 						<input type="file" id="profile-pic-input" class="d-none">
 						<div class="bg-white px-3 py-2">
 							<div class="text-muted mb-2"><label for="input-name">Your Name</label></div>
-							<input type="text" name="name" id="input-name" class="w-100 border-0 py-2 profile-input">
+							<input type="text" name="name" id="input-name" value="<%= user.username %>"
+								class="w-100 border-0 py-2 profile-input">
 						</div>
 						<div class="text-muted p-3 small">
 							This is not your username or pin. This name will be visible to your WhatsApp contacts.
 						</div>
 						<div class="bg-white px-3 py-2">
 							<div class="text-muted mb-2"><label for="input-about">About</label></div>
-							<input type="text" name="name" id="input-about" value=""
+							<input type="text" name="name" id="input-about" value="<%= user.description %>"
 								class="w-100 border-0 py-2 profile-input">
 						</div>
 					</div>
@@ -165,7 +172,7 @@
 		<h3>Friend Requests</h3>
 		<input type="text" id="friendSearchInput" placeholder="Search friend requests">
 		<ul id="friendRequestsList">
-			<li>
+			<!-- <li>
 				<div class="friend-request">
 					<img src="friend_avatar.jpg" alt="Friend Avatar">
 					<div class="friend-details">
@@ -175,66 +182,9 @@
 						<button class="reject-button">Reject</button>
 					</div>
 				</div>
-			</li>
-			<li>
-				<div class="friend-request">
-					<img src="friend_avatar.jpg" alt="Friend Avatar">
-					<div class="friend-details">
-						<p class="friend-name">HotiTEST</p>
-						<p class="friend-message">Would you like to be friends?</p>
-						<button class="accept-button">Accept</button>
-						<button class="reject-button">Reject</button>
-					</div>
-				</div>
-			</li>
-			<li>
-				<div class="friend-request">
-					<img src="friend_avatar.jpg" alt="Friend Avatar">
-					<div class="friend-details">
-						<p class="friend-name">IBISHItest</p>
-						<p class="friend-message">Would you like to be friends?</p>
-						<button class="accept-button">Accept</button>
-						<button class="reject-button">Reject</button>
-					</div>
-				</div>
-			</li>
-			<li>
-				<div class="friend-request">
-					<img src="friend_avatar.jpg" alt="Friend Avatar">
-					<div class="friend-details">
-						<p class="friend-name">milotiTEST</p>
-						<p class="friend-message">Would you like to be friends?</p>
-						<button class="accept-button">Accept</button>
-						<button class="reject-button">Reject</button>
-					</div>
-				</div>
-			</li>
-			<li>
-				<div class="friend-request">
-					<img src="friend_avatar.jpg" alt="Friend Avatar">
-					<div class="friend-details">
-						<p class="friend-name">FisnikuTEST</p>
-						<p class="friend-message">Would you like to be friends?</p>
-						<button class="accept-button">Accept</button>
-						<button class="reject-button">Reject</button>
-					</div>
-				</div>
-			</li>
-			<li>
-				<div class="friend-request">
-					<img src="friend_avatar.jpg" alt="Friend Avatar">
-					<div class="friend-details">
-						<p class="friend-name">NitaTEST</p>
-						<p class="friend-message">Would you like to be friends?</p>
-						<button class="accept-button">Accept</button>
-						<button class="reject-button">Reject</button>
-					</div>
-				</div>
-			</li>
-
+			</li> -->
 		</ul>
 	</div>
-
 
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -246,10 +196,18 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"
 		integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
 		crossorigin="anonymous"></script>
-	<script src="/home/js/datastore.js"></script>
+
+	<script>
+		let user = {
+			id: '<%= user._id %>',
+			name: '<%= user.username %>',
+			number: "",
+			pic: "/home/images/asdsd12f34ASd231.png"
+		};
+	</script>
+
 	<script src="/home/js/date-utils.js"></script>
 	<script src="/home/js/script.js"></script>
-	<script src="/home/js/FRpopup.js"></script>
 </body>
 
 </html>

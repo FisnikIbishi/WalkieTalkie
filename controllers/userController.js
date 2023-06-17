@@ -22,6 +22,17 @@ module.exports = {
             res.status(400).json({ message: error });
         }
     },
+    currentUser: async function (req, res) {
+        try {
+            const token = req.cookies.token;
+            const decoded = jwt.decode(token);
+            const users = await userRepository.getUser(decoded._id);
+            res.status(200).json(users);
+        } catch (error) {
+            console.log(error)
+            res.status(501).send(error);
+        }
+    },
     getUsers: async function (req, res) {
         try {
             const users = await userRepository.getUsers(req.params.username);
@@ -34,9 +45,43 @@ module.exports = {
         try {
             const token = req.cookies.token;
             const decoded = jwt.decode(token)
-    
+
             await userRepository.addFriend(decoded._id, req.body);
             res.status(201).json({ message: 'Friend request sent!' });
+        } catch (error) {
+            console.log(error)
+            res.status(501).send(error);
+        }
+    },
+    getFriendRequests: async function (req, res) {
+        try {
+            const token = req.cookies.token;
+            const decoded = jwt.decode(token)
+
+            const firendReuests = await userRepository.getFriendRequests(decoded._id);
+            res.status(200).json(firendReuests);
+        } catch (error) {
+            console.log(error)
+            res.status(501).send(error);
+        }
+    },
+    acceptFriend: async function (req, res) {
+        try {
+            const token = req.cookies.token;
+            const decoded = jwt.decode(token)
+            const response = await userRepository.acceptFriend(decoded._id, req.body.senderId.toString());
+            res.status(200).json(response);
+        } catch (error) {
+            console.log(error)
+            res.status(501).send(error);
+        }
+    },
+    rejectFriend: async function (req, res) {
+        try {
+            const token = req.cookies.token;
+            const decoded = jwt.decode(token)
+            const response = await userRepository.rejectFriend(decoded._id, req.body.senderId.toString());
+            res.status(200).json(response);
         } catch (error) {
             console.log(error)
             res.status(501).send(error);
