@@ -6,9 +6,7 @@ module.exports = {
     home: async function (req, res) {
         const token = req.cookies.token;
         const decoded = jwt.decode(token);
-        const user = await userRepository.getUser(decoded._id);
-        res.render('home', {
-            user: user
-        });
+        const data = await userRepository.getData(decoded._id);
+        res.render('home', data);
     }
 }

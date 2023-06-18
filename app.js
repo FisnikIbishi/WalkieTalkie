@@ -43,7 +43,7 @@ io.on('connection', (socket) => {
     // Handle incoming chat messages
     socket.on('new_message', (msg) => {
         // Broadcast the message to all connected clients
-        socket.broadcast.emit("new_message", msg);
+        socket.broadcast.emit(msg.recvId +  "_new_message", msg);
     });
 
     // Handle socket disconnections
