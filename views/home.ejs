@@ -25,7 +25,7 @@
 
 				<!-- Navbar -->
 				<div class="row d-flex flex-row align-items-center p-2" id="navbar">
-					<img alt="Profile Photo" class="img-fluid rounded-circle mr-2" style="height:50px; cursor:pointer;"
+					<img alt="Profile Photo" src="/images/<%= data.user.avatar %>"  class="img-fluid rounded-circle mr-2" style="height:50px; cursor:pointer;"
 						onclick="showProfileSettings()" id="display-pic">
 					<div class="text-white font-weight-bold" id="username"></div>
 
@@ -36,12 +36,13 @@
 							<i class="fas fa-bell" style="color: white;"></i>
 							<span class="friend-requests-count">0</span>
 						</a> -->
-						
-						<a class="nav-link dropdown-toggle" data-toggle="requests" href="#" role="button"
-		aria-haspopup="true" aria-expanded="false" onclick="showUserListPopup()">
-		<i class="fas fa-address-card" style="color: white;"></i>
-	</a>
-						
+
+						<a class="nav-link dropdown-toggle" data-toggle="requests" href="#" role="button" id="userListIcon"
+							aria-haspopup="true" aria-expanded="false" onclick="showUserListPopup()"
+							style="display: none;">
+							<i class="fas fa-address-card" style="color: white;"></i>
+						</a>
+
 
 						<a class="nav-link dropdown-toggle" id="friend-request-icon" style="display: none;"
 							data-toggle="requests" href="#" onclick="showFriendRequestsPopup(event)" role="button"
@@ -72,7 +73,7 @@
 								aria-haspopup="true" aria-expanded="false">Settings<i
 									class="fas fa-ellipsis-v text-white"></i></a></a>
 
-							<a class="dropdown-item" href="/logout">Log Out</a>
+							<a class="dropdown-item" href="/api/logout">Log Out</a>
 						</div>
 					</div>
 				</div>
@@ -89,7 +90,7 @@
 						<div class="text-white font-weight-bold">Profile</div>
 					</div>
 					<div class="d-flex flex-column" style="overflow:auto;">
-						<img alt="Profile Photo" class="img-fluid rounded-circle my-5 justify-self-center mx-auto"
+						<img alt="Profile Photo" src="/images/<%= data.user.avatar %>"  class="img-fluid rounded-circle my-5 justify-self-center mx-auto"
 							id="profile-pic">
 						<input type="file" id="profile-pic-input" class="d-none">
 						<div class="bg-white px-3 py-2">
@@ -168,12 +169,12 @@
 			<br><br>
 			<input type="submit" value="Search"><br><br>
 		</form>
-	
+
 		<ul id="user_list" style="overflow-y: scroll; max-height: 270px;">
 			<!-- Add list items dynamically using JavaScript -->
 		</ul>
 	</div>
-	
+
 
 	<div class="popup" id="friendRequestsPopup">
 		<span class="close" onclick="hideFriendRequestsPopup()">&times;</span>
@@ -197,47 +198,8 @@
 		<span class="close" onclick="hideUserListPopup()">&times;</span>
 		<h3>Users List</h3>
 		<ul id="userList"></ul>
-		
+
 	</div>
-	
-	<script>
-		
-		function addUsersToUserList(users) {
-			var userList = document.getElementById("userList");
-			userList.innerHTML = ""; // Clear existing list
-
-			for (var i = 0; i < users.length; i++) {
-				var user = users[i];
-				var listItem = document.createElement("li");
-				listItem.className = "user";
-
-				var userImage = document.createElement("img");
-				userImage.src = user.photo;
-				listItem.appendChild(userImage);
-
-				var userName = document.createElement("span");
-				userName.textContent = user.name;
-				listItem.appendChild(userName);
-
-				userList.appendChild(listItem);
-			}
-		}
-
-		// Example usage: adding some users to the user list
-		var users = [
-			{ name: "User 1", photo: "/home/images/My project.png" },
-			{ name: "User 2", photo: "user2.jpg" },
-			{ name: "User 3", photo: "user3.jpg" }
-		];
-		addUsersToUserList(users);
-
-		// Example usage: adding some users to the user list
-		
-	</script>
-	
-	
-	
-
 
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -255,7 +217,7 @@
 			id: '<%= data.user._id %>',
 			name: '<%= data.user.username %>',
 			number: "+91 91231 40293",
-			pic: "/home/images/asdsd12f34ASd231.png"
+			pic: '/images/<%= data.user.avatar %>'
 		};
 
 		let contactList = [];
@@ -267,7 +229,7 @@
 				id: '<%= contact.friend_id._id %>',
 				name: '<%= contact.friend_id.username %>',
 				number: "+91 91231 40293",
-				pic: "/home/images/asdsd12f34ASd231.png",
+				pic: '/images/<%= contact.friend_id.avatar %>',
 				lastSeen: "Apr 29 2018 17:58:02"
 			}
 		)}
@@ -289,6 +251,45 @@
 				recvIsGroup: false
 			})}
 			<% }) %> `;
+
+
+		function addUsersToUserList(users) {
+			var userList = document.getElementById("userList");
+			userList.innerHTML = ""; // Clear existing list
+
+			for (var i = 0; i < users.length; i++) {
+				var user = users[i];
+				var listItem = document.createElement("li");
+				listItem.className = "user";
+
+				var userImage = document.createElement("img");
+				userImage.src = '/images/' + user.avatar;
+				listItem.appendChild(userImage);
+
+				var userName = document.createElement("span");
+				userName.textContent = user.name;
+				listItem.appendChild(userName);
+
+				userList.appendChild(listItem);
+			}
+		}
+
+		var users = [];
+
+		`
+			<% data.users.forEach(function(user) { %>
+				${users.push(
+			{
+				name: '<%= user.username %>',
+				avatar: '<%= user.avatar %>'
+			})}
+			<% }) %> `;
+
+		if (users.length > 0) {
+			document.getElementById('userListIcon').style.display = 'inline-block'
+		}
+		addUsersToUserList(users);
+
 	</script>
 
 	<script src="/home/js/date-utils.js"></script>

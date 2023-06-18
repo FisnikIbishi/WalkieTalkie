@@ -22,6 +22,22 @@ module.exports = {
             res.status(400).json({ message: error });
         }
     },
+    saveAvatar: async function (req, res) {
+        try {
+            const token = req.cookies.token;
+            const decoded = jwt.decode(token);
+
+            const user = await User.findOneAndUpdate({ _id: decoded._id }, { avatar: req.file.filename }, {
+                returnOriginal: false
+            });
+
+            console.log(req.file)
+            res.send(req.file)
+        } catch (error) {
+            console.log(error.message)
+            res.status(400).send({ error: error.message })
+        }
+    },
     currentUser: async function (req, res) {
         try {
             const token = req.cookies.token;
@@ -90,6 +106,7 @@ module.exports = {
     logOut: async function (req, res) {
         try {
             await userRepository.logOut(req.user._id);
+            res.cookie("token", '');
             res.status(200).json({ message: 'User logged out successfully!' });
         } catch (error) {
             res.status(500).send(error);

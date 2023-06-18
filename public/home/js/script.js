@@ -284,9 +284,6 @@ let populateChatList = () => {
 				chat.name = chat.group.name;
 			} else {
 				chat.contact = contactList.find((contact) => (msg.sender !== user.id) ? (contact.id === msg.sender) : (contact.id === msg.recvId));
-				// console.log('msg.sender: ' + msg.sender);
-				// console.log('user.id: ' + user.id);
-				// console.log('msg.recvId: ' + msg.recvId);
 				chat.name = chat.contact.name;
 			}
 
@@ -490,12 +487,29 @@ function createMessageAndSend(socket) {
 	socket.emit('new_message', msg);
 }
 
+async function uploadAvatar(file) {
+	const formData = new FormData();
+	formData.append("image", file);
+
+	const response = await fetch('http://localhost:3000/api/uploadAvatar', {
+		method: 'POST',
+		body: formData
+	});
+
+	if (response.ok) {
+		const savedFile = await response.json();
+		DOM.displayPic.src = '/public/images/' + savedFile.filename;
+		DOM.profilePic.stc = '/public/images/' + savedFile.filename;
+	}
+}
+
 let init = () => {
 	DOM.username.innerHTML = user.name;
-	DOM.displayPic.src = user.pic;
-	DOM.profilePic.stc = user.pic;
 	DOM.profilePic.addEventListener("click", () => DOM.profilePicInput.click());
-	DOM.profilePicInput.addEventListener("change", () => console.log(DOM.profilePicInput.files[0]));
+	DOM.profilePicInput.addEventListener("change", () => {
+		const file = DOM.profilePicInput.files[0];
+		uploadAvatar(file);
+	});
 	DOM.inputName.addEventListener("blur", (e) => user.name = e.target.value);
 	generateChatList();
 	getFriendRequests();
@@ -689,7 +703,7 @@ function searchFriendRequests() {
 			request.style.display = 'none';
 		}
 	});
-	
+
 }
 function showUserListPopup() {
 	document.getElementById('overlay').style.display = 'block';
@@ -700,7 +714,6 @@ function hideUserListPopup() {
 	document.getElementById('overlay').style.display = 'none';
 	document.getElementById("userListPopup").style.display = "none";
 }
-
 
 
 // Add event listener to the search input
