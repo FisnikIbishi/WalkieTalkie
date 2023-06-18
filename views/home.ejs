@@ -36,6 +36,12 @@
 							<i class="fas fa-bell" style="color: white;"></i>
 							<span class="friend-requests-count">0</span>
 						</a> -->
+						
+						<a class="nav-link dropdown-toggle" data-toggle="requests" href="#" role="button"
+		aria-haspopup="true" aria-expanded="false" onclick="showUserListPopup()">
+		<i class="fas fa-address-card" style="color: white;"></i>
+	</a>
+						
 
 						<a class="nav-link dropdown-toggle" id="friend-request-icon" style="display: none;"
 							data-toggle="requests" href="#" onclick="showFriendRequestsPopup(event)" role="button"
@@ -77,7 +83,7 @@
 				<!-- Profile Settings -->
 				<div class="d-flex flex-column w-100 h-100" id="profile-settings">
 					<div class="row d-flex flex-row align-items-center p-2 m-0"
-						style="background:#009688; min-height:65px;">
+						style="background:#05BFDB; min-height:65px;">
 						<i class="fas fa-arrow-left p-2 mx-3 my-1 text-white"
 							style="font-size: 1.5rem; cursor: pointer;" onclick="hideProfileSettings()"></i>
 						<div class="text-white font-weight-bold">Profile</div>
@@ -162,10 +168,12 @@
 			<br><br>
 			<input type="submit" value="Search"><br><br>
 		</form>
-
-		<ul id="user_list">
+	
+		<ul id="user_list" style="overflow-y: scroll; max-height: 270px;">
+			<!-- Add list items dynamically using JavaScript -->
 		</ul>
 	</div>
+	
 
 	<div class="popup" id="friendRequestsPopup">
 		<span class="close" onclick="hideFriendRequestsPopup()">&times;</span>
@@ -185,6 +193,51 @@
 			</li> -->
 		</ul>
 	</div>
+	<div class="popup1" id="userListPopup">
+		<span class="close" onclick="hideUserListPopup()">&times;</span>
+		<h3>Users List</h3>
+		<ul id="userList"></ul>
+		
+	</div>
+	
+	<script>
+		
+		function addUsersToUserList(users) {
+			var userList = document.getElementById("userList");
+			userList.innerHTML = ""; // Clear existing list
+
+			for (var i = 0; i < users.length; i++) {
+				var user = users[i];
+				var listItem = document.createElement("li");
+				listItem.className = "user";
+
+				var userImage = document.createElement("img");
+				userImage.src = user.photo;
+				listItem.appendChild(userImage);
+
+				var userName = document.createElement("span");
+				userName.textContent = user.name;
+				listItem.appendChild(userName);
+
+				userList.appendChild(listItem);
+			}
+		}
+
+		// Example usage: adding some users to the user list
+		var users = [
+			{ name: "User 1", photo: "/home/images/My project.png" },
+			{ name: "User 2", photo: "user2.jpg" },
+			{ name: "User 3", photo: "user3.jpg" }
+		];
+		addUsersToUserList(users);
+
+		// Example usage: adding some users to the user list
+		
+	</script>
+	
+	
+	
+
 
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

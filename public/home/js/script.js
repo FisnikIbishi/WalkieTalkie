@@ -689,7 +689,19 @@ function searchFriendRequests() {
 			request.style.display = 'none';
 		}
 	});
+	
 }
+function showUserListPopup() {
+	document.getElementById('overlay').style.display = 'block';
+	document.getElementById("userListPopup").style.display = "block";
+}
+
+function hideUserListPopup() {
+	document.getElementById('overlay').style.display = 'none';
+	document.getElementById("userListPopup").style.display = "none";
+}
+
+
 
 // Add event listener to the search input
 document.getElementById('friendSearchInput').addEventListener('input', searchFriendRequests);
