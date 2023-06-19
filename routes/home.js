@@ -13,7 +13,7 @@ router.post('/api/friendRequests/reject', authorize(), userController.rejectFrie
 router.post('/api/users/current', authorize(), userController.currentUser);
 router.get('/api/users/:username', authorize(), userController.getUsers);
 router.post('/api/users', authorize(), userController.addFriend);
-router.get('/api/logout', authorize(), userController.logOut);
+router.get('/logout', authorize(), userController.logOut);
 
 // Image Upload
 const imageStorage = multer.diskStorage({
