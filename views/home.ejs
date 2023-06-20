@@ -237,20 +237,21 @@
 
 		// message status - 0:sent, 1:delivered, 2:read
 		let messages = [];
-
-		`
-			<% data.messages.forEach(function(message) { %>
-				${messages.push(
-			{
-				id: '<%= message._id %>',
-				sender: '<%= message.sender._id %>',
-				body: '<%= message.message %>',
-				time: "April 28 2018 17:10:21",
-				status: 2,
-				recvId: '<%= message.recipient._id %>',
-				recvIsGroup: false
-			})}
-			<% }) %> `;
+		
+`
+	<% data.messages.forEach(function(message) { %>
+		${messages.push(
+		{
+			id: '<%= message._id %>',
+			sender: '<%= message.sender._id %>',
+			body: '<%= message.message %>',
+			time: '<%=message.created_at%>',
+			status: 2,
+			recvId: '<%= message.recipient._id %>',
+			recvIsGroup: false
+		})}
+		<% }) %>
+`;
 
 
 		function addUsersToUserList(users) {
