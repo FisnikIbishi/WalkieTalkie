@@ -71,19 +71,27 @@ module.exports = {
         )
         friend.save();
 
+        const friend2 = new Friend(
+            {
+                user_id: senderId,
+                friend_id: userId
+            }
+        )
+        friend2.save();
+
         const newMessage = new Message(
             {
-                sender: senderId,
-                recipient: userId,
-                message: 'Say hi to your new friend!'
+                sender: userId,
+                recipient: senderId,
+                message: 'Hello!'
             }
         )
         newMessage.save();
 
         const newMessage2 = new Message(
             {
-                sender: userId,
-                recipient: senderId,
+                sender: senderId,
+                recipient: userId,
                 message: 'Say hi to your new friend!'
             }
         )
