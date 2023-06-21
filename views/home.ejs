@@ -12,7 +12,64 @@
 	<link rel="stylesheet" href="/home/css/style.css">
 	<link rel="stylesheet" href="/home/css/style.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+	<style>
+		.modal {
+			display: none;
+			position: fixed;
+			z-index: 1;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			overflow: auto;
+			background-color: rgb(0, 0, 0);
+			background-color: rgba(0, 0, 0, 0.9);
+		}
 
+		.modal-content {
+			margin: 15% auto;
+			padding: 20px;
+			width: 80%;
+			max-width: 600px;
+			background-color: #fefefe;
+			border: 1px solid #888;
+			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+			animation-name: animatetop;
+			animation-duration: 0.4s;
+		}
+
+		@keyframes animatetop {
+			from {
+				top: -300px;
+				opacity: 0;
+			}
+
+			to {
+				top: 0;
+				opacity: 1;
+			}
+		}
+
+		.close {
+			color: #aaa;
+			float: right;
+			font-size: 28px;
+			font-weight: bold;
+		}
+
+		.close:hover,
+		.close:focus {
+			color: black;
+			text-decoration: none;
+			cursor: pointer;
+		}
+
+		#localVideo,
+		#remoteVideo {
+			width: 100%;
+			height: auto;
+		}
+	</style>
 
 </head>
 </head>
@@ -25,8 +82,8 @@
 
 				<!-- Navbar -->
 				<div class="row d-flex flex-row align-items-center p-2" id="navbar">
-					<img alt="Profile Photo" src="/images/<%= data.user.avatar %>"  class="img-fluid rounded-circle mr-2" style="height:50px; cursor:pointer;"
-						onclick="showProfileSettings()" id="display-pic">
+					<img alt="Profile Photo" src="/images/<%= data.user.avatar %>" class="img-fluid rounded-circle mr-2"
+						style="height:50px; cursor:pointer;" onclick="showProfileSettings()" id="display-pic">
 					<div class="text-white font-weight-bold" id="username"></div>
 
 					<div class="nav-item dropdown ml-auto">
@@ -37,12 +94,11 @@
 							<span class="friend-requests-count">0</span>
 						</a> -->
 
-						<a class="nav-link dropdown-toggle" data-toggle="requests" href="#" role="button" id="userListIcon"
-							aria-haspopup="true" aria-expanded="false" onclick="showUserListPopup()"
+						<a class="nav-link dropdown-toggle" data-toggle="requests" href="#" role="button"
+							id="userListIcon" aria-haspopup="true" aria-expanded="false" onclick="showUserListPopup()"
 							style="display: none;">
 							<i class="fas fa-address-card" style="color: white;"></i>
 						</a>
-
 
 						<a class="nav-link dropdown-toggle" id="friend-request-icon" style="display: none;"
 							data-toggle="requests" href="#" onclick="showFriendRequestsPopup(event)" role="button"
@@ -56,8 +112,6 @@
 							aria-haspopup="true" aria-expanded="false">
 							<i class="fas fa-ellipsis-v text-white"></i>
 						</a>
-
-
 
 						<div class="dropdown-menu dropdown-menu-right">
 
@@ -90,8 +144,8 @@
 						<div class="text-white font-weight-bold">Profile</div>
 					</div>
 					<div class="d-flex flex-column" style="overflow:auto;">
-						<img alt="Profile Photo" src="/images/<%= data.user.avatar %>"  class="img-fluid rounded-circle my-5 justify-self-center mx-auto"
-							id="profile-pic">
+						<img alt="Profile Photo" src="/images/<%= data.user.avatar %>"
+							class="img-fluid rounded-circle my-5 justify-self-center mx-auto" id="profile-pic">
 						<input type="file" id="profile-pic-input" class="d-none">
 						<div class="bg-white px-3 py-2">
 							<div class="text-muted mb-2"><label for="input-name">Your Name</label></div>
@@ -158,6 +212,17 @@
 		</div>
 	</div>
 
+	<h1>AudioVideo Web App</h1>
+
+	<div id="localVideoContainer">
+		<video id="localVideo" autoplay muted></video>
+	</div>
+
+	<div id="remoteVideoContainer">
+		<video id="remoteVideo" autoplay></video>
+	</div>
+
+	<button id="btn-call">Call</button>
 
 	<div class="overlay" id="overlay"></div>
 	<div class="popup" id="popup">
@@ -201,6 +266,9 @@
 
 	</div>
 
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/peerjs/1.3.2/peerjs.min.js"></script>
+
+	<script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js" defer></script>
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
 		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -222,6 +290,12 @@
 
 		let contactList = [];
 
+		const parsedDate = new Date().toLocaleDateString("en-US", {
+			month: "short",
+			day: "2-digit",
+			year: "numeric"
+		});
+
 		`
 			<% data.contacts.forEach(function(contact) { %>
 				${contactList.push(
@@ -230,7 +304,7 @@
 				name: '<%= contact.friend_id.username %>',
 				number: "+91 91231 40293",
 				pic: '/images/<%= contact.friend_id.avatar %>',
-				lastSeen: "Apr 29 2018 17:58:02"
+				lastSeen: parsedDate
 			}
 		)}
 			<% }) %> `;
@@ -294,6 +368,121 @@
 
 	<script src="/home/js/date-utils.js"></script>
 	<script src="/home/js/script.js"></script>
+	<script src="/client.js"></script>
+
+
+	<!-- <script>
+		// Use an offscreen canvas as the video source.
+		const canvas = document.createElement('canvas');
+		const context = canvas.getContext('2d');
+		let color = 0;
+		const draw = () => {
+			color = (color + 2) % 255;
+			context.fillStyle = `rgb(${color}, 0, 0)`;
+			context.fillRect(0, 0, 300, 150);
+			requestAnimationFrame(draw);
+		}
+		draw();
+
+		const localVideo = document.getElementById('local');
+		const stream = canvas.captureStream();
+		localVideo.srcObject = stream;
+
+		const peerConnection = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
+
+		stream.getTracks().forEach(t => peerConnection.addTrack(t, stream));
+
+		// Save a list of ice candidates to send to the peer
+		const iceCandidates = [];
+		peerConnection.onicecandidate = e => {
+			if (e.candidate) {
+				iceCandidates.push(e.candidate);
+			}
+		};
+
+		peerConnection.ontrack = e => {
+			document.getElementById('remote').srcObject = e.streams[0];
+		};
+
+		(async () => {
+			const copyButton = document.getElementById('copy');
+
+			peerConnection.onicegatheringstatechange = () => {
+				if (peerConnection.iceGatheringState === 'complete') {
+					copyButton.disabled = false;
+					console.log('Offer ready, click copy button.');
+				}
+			};
+
+			const offer = await peerConnection.createOffer();
+			await peerConnection.setLocalDescription(offer);
+
+			const pasteInput = document.getElementById('paste');
+
+			copyButton.onclick = () => {
+				navigator.clipboard.writeText(JSON.stringify({ offer, iceCandidates }));
+				console.log('Offer copied/candidates. Paste in Answerer example.');
+
+				pasteInput.disabled = false;
+			};
+
+			pasteInput.onpaste = async (e) => {
+				const { answer, iceCandidates } = JSON.parse(e.clipboardData.getData('text/plain'));
+				await peerConnection.setRemoteDescription(answer);
+				iceCandidates.forEach(c => peerConnection.addIceCandidate(c));
+			};
+		})();
+	</script>
+
+
+
+
+
+	<script>
+		const localVideo = document.getElementById('local');
+		const stream = canvas.captureStream();
+		localVideo.srcObject = stream;
+
+		const peerConnection = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
+
+		stream.getTracks().forEach(t => peerConnection.addTrack(t, stream));
+
+		// Save a list of ice candidates to send to the peer
+		const iceCandidates = [];
+		peerConnection.onicecandidate = e => {
+			if (e.candidate) {
+				iceCandidates.push(e.candidate);
+			}
+		};
+
+		peerConnection.ontrack = e => {
+			document.getElementById('remote').srcObject = e.streams[0];
+		};
+
+		const copyButton = document.getElementById('copy');
+
+		document.getElementById('paste').onpaste = async (e) => {
+			const { offer, iceCandidates } = JSON.parse(e.clipboardData.getData('text/plain'));
+
+			peerConnection.onicegatheringstatechange = () => {
+				if (peerConnection.iceGatheringState === 'complete') {
+					copyButton.disabled = false;
+					console.log('Answer ready, click copy button.');
+				}
+			};
+
+			await peerConnection.setRemoteDescription(offer);
+			const answer = await peerConnection.createAnswer();
+			await peerConnection.setLocalDescription(answer);
+
+			copyButton.onclick = () => {
+				navigator.clipboard.writeText(JSON.stringify({ answer, iceCandidates }));
+				console.log('Copied answer/candidates. Paste in Offerer example.');
+			};
+
+			iceCandidates.forEach(c => peerConnection.addIceCandidate(c));
+		};
+	</script> -->
 </body>
 
 </html>

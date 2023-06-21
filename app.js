@@ -58,10 +58,15 @@ const io = socketIO(server);
 io.on('connection', (socket) => {
   console.log('User connected');
 
+  // Receive local stream from the client
+  socket.on('stream', stream => {
+    // Broadcast the stream to all other clients
+    console.log(stream)
+    socket.broadcast.emit('stream', stream);
+  });
+
   // Handle incoming chat messages
   socket.on('new_message', (msg) => {
-    // Broadcast the message to all connected clients
-
     const newMessage = new Message(
       {
         sender: msg.sender,
@@ -72,6 +77,23 @@ io.on('connection', (socket) => {
     newMessage.save();
 
     socket.broadcast.emit(msg.recvId + "_new_message", msg);
+  });
+
+  socket.on('call', (offer) => {
+    socket.broadcast.emit("call", offer);
+  });
+
+  socket.on('answer', (answer) => {
+    socket.broadcast.emit("answer", answer);
+  });
+
+  socket.on('newUser', (id) => {
+    socket.broadcast.emit("userJoined", id);
+  });
+
+
+  socket.on('ice candidates', (candidate) => {
+    socket.broadcast.emit('ice candidates', candidate);
   });
 
   // Handle socket disconnections
