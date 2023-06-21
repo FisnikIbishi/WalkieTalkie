@@ -284,7 +284,6 @@ let populateChatList = () => {
 				chat.name = chat.group.name;
 			} else {
 				chat.contact = contactList.find((contact) => (msg.sender !== user.id) ? (contact.id === msg.sender) : (contact.id === msg.recvId));
-				console.log(chat)
 				chat.name = chat.contact.name;
 			}
 
@@ -342,14 +341,13 @@ let addMessageToMessageArea = (msg) => {
 	const inputDate = new Date(msg.time);
 
 	const parsedDate = inputDate.toLocaleDateString("en-GB", {
-	  day: "2-digit",
-	  month: "2-digit",
-	  year: "numeric"
+		day: "2-digit",
+		month: "2-digit",
+		year: "numeric"
 	});
 
 
 	if (lastDate != msgDate) {
-		console.log('dateeee ' + parsedDate)
 		addDateToMessageArea(parsedDate);
 		lastDate = msgDate;
 	}
@@ -528,8 +526,15 @@ let init = () => {
 	const socket = io();
 
 	socket.on(user.id + '_new_message', (msg) => {
-		console.log('new messageee ' + msg)
 		sendMessage(msg);
+	});
+
+	socket.on(user.id + '_add-friend', (friendId) => {
+		const requestsCount = document.querySelector('.friend-requests-count');
+		const count = parseInt(requestsCount.textContent)
+		requestsCount.textContent = count + 1;
+		document.getElementById("friend-request-icon").style.display = "inline-block";
+		getFriendRequests();
 	});
 
 	document.getElementById('input').addEventListener('keypress', function (e) {
@@ -629,6 +634,41 @@ async function acceptRequest(senderId, nodeId) {
 	});
 
 	if (response.ok) {
+		const data = await response.json();
+
+		contactList.push(
+			{
+				id: data.newFriend._id,
+				name: data.newFriend.username,
+				number: "+91 91231 40293",
+				pic: '/images/' + data.newFriend.avatar,
+				lastSeen: ""
+			}
+		)
+
+		messages.push(
+			{
+				id: data.newMessage1._id,
+				sender: data.newMessage1.sender,
+				body: data.newMessage1.message,
+				time: data.newMessage1.created_at,
+				status: 2,
+				recvId: data.newMessage1.recipient,
+				recvIsGroup: false
+			})
+
+		messages.push(
+			{
+				id: data.newMessage2._id,
+				sender: data.newMessage2.sender,
+				body: data.newMessage2.message,
+				time: data.newMessage2.created_at,
+				status: 2,
+				recvId: data.newMessage2.recipient,
+				recvIsGroup: false
+			})
+
+
 		document.getElementById(nodeId).remove();
 		const friendRequests = document.querySelector('.friend-requests-count')
 		const count = parseInt(friendRequests.textContent)
@@ -638,6 +678,8 @@ async function acceptRequest(senderId, nodeId) {
 		else {
 			document.getElementById("friend-request-icon").style.display = "none";
 		}
+
+		generateChatList();
 	}
 }
 
@@ -688,6 +730,7 @@ async function addFriend(button, id) {
 	if (response.ok) {
 		const data = await response.json(); //extract JSON from the http response
 		button.style.display = "none";
+		socket.emit('add-friend', id);
 	}
 }
 

@@ -37,7 +37,6 @@ module.exports = {
                 returnOriginal: false
             });
 
-            console.log(req.file)
             res.send(req.file)
         } catch (error) {
             console.log(error.message)

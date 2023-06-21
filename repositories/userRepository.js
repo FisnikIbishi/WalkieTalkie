@@ -63,6 +63,7 @@ module.exports = {
     },
     acceptFriend: async function (userId, senderId) {
         await FriendRequest.findOneAndRemove({ recipient: userId, sender: senderId });
+
         const friend = new Friend(
             {
                 user_id: userId,
@@ -79,14 +80,16 @@ module.exports = {
         )
         friend2.save();
 
-        const newMessage = new Message(
+        const newFriend = await User.findOne({ _id: senderId });
+
+        const newMessage1 = new Message(
             {
                 sender: userId,
                 recipient: senderId,
                 message: 'Hello!'
             }
         )
-        newMessage.save();
+        newMessage1.save();
 
         const newMessage2 = new Message(
             {
@@ -97,7 +100,7 @@ module.exports = {
         )
         newMessage2.save();
 
-        return { message: 'Friend request accepted!' }
+        return { newMessage1: newMessage1, newMessage2: newMessage2, newFriend: newFriend }
     },
     rejectFriend: async function (userId, senderId) {
         await FriendRequest.findOneAndRemove({ recipient: userId, sender: senderId });

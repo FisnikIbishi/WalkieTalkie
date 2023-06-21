@@ -65,6 +65,10 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('stream', stream);
   });
 
+  socket.on('add-friend', id => {
+    socket.broadcast.emit(id + '_add-friend', id);
+  });
+
   // Handle incoming chat messages
   socket.on('new_message', (msg) => {
     const newMessage = new Message(
