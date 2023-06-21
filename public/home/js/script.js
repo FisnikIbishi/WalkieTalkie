@@ -338,8 +338,18 @@ let addDateToMessageArea = (date) => {
 
 let addMessageToMessageArea = (msg) => {
 	let msgDate = mDate(msg.time).getDate();
+	const inputDate = new Date(msg.time);
+
+	const parsedDate = inputDate.toLocaleDateString("en-GB", {
+	  day: "2-digit",
+	  month: "2-digit",
+	  year: "numeric"
+	});
+
+
 	if (lastDate != msgDate) {
-		addDateToMessageArea(msgDate);
+		console.log('dateeee ' + parsedDate)
+		addDateToMessageArea(parsedDate);
 		lastDate = msgDate;
 	}
 

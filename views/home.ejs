@@ -289,13 +289,6 @@
 		};
 
 		let contactList = [];
-
-		const parsedDate = new Date().toLocaleDateString("en-US", {
-			month: "short",
-			day: "2-digit",
-			year: "numeric"
-		});
-
 		`
 			<% data.contacts.forEach(function(contact) { %>
 				${contactList.push(
@@ -304,7 +297,7 @@
 				name: '<%= contact.friend_id.username %>',
 				number: "+91 91231 40293",
 				pic: '/images/<%= contact.friend_id.avatar %>',
-				lastSeen: parsedDate
+				lastSeen: ""
 			}
 		)}
 			<% }) %> `;

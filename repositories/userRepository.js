@@ -70,6 +70,25 @@ module.exports = {
             }
         )
         friend.save();
+
+        const newMessage = new Message(
+            {
+                sender: senderId,
+                recipient: userId,
+                message: 'Say hi to your new friend!'
+            }
+        )
+        newMessage.save();
+
+        const newMessage2 = new Message(
+            {
+                sender: userId,
+                recipient: senderId,
+                message: 'Say hi to your new friend!'
+            }
+        )
+        newMessage2.save();
+
         return { message: 'Friend request accepted!' }
     },
     rejectFriend: async function (userId, senderId) {
@@ -79,8 +98,9 @@ module.exports = {
     saveMessage: async function (message) {
         const newMessage = new Message(
             {
-                user_id: userId,
-                friend_id: senderId
+                sender: msg.sender,
+                recipient: msg.recvId,
+                message: message
             }
         )
         newMessage.save();
