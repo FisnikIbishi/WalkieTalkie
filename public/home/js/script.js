@@ -1,41 +1,3 @@
-// let contactList = [
-// 	{
-// 		id: 0,
-// 		name: "okokokoko",
-// 		number: "+91 91231 40293",
-// 		pic: "/home/images/asdsd12f34ASd231.png",
-// 		lastSeen: "Apr 29 2018 17:58:02"
-// 	},
-// 	{
-// 		id: 1,
-// 		name: "Nitin",
-// 		number: "+91 98232 37261",
-// 		pic: "/home/images/Ass09123asdj9dk0qw.jpg",
-// 		lastSeen: "Apr 28 2018 22:18:21"
-// 	},
-// 	{
-// 		id: 2,
-// 		name: "Sanjay",
-// 		number: "+91 72631 2937",
-// 		pic: "/home/images/asd1232ASdas123a.png",
-// 		lastSeen: "Apr 28 2018 19:23:16"
-// 	},
-// 	{
-// 		id: 3,
-// 		name: "Suvro Mobile",
-// 		number: "+91 98232 63547",
-// 		pic: "/home/images/Alsdk120asdj913jk.jpg",
-// 		lastSeen: "Apr 29 2018 11:16:42"
-// 	},
-// 	{
-// 		id: 4,
-// 		name: "Dee",
-// 		number: "+91 72781 38213",
-// 		pic: "/home/images/dsaad212312aGEA12ew.png",
-// 		lastSeen: "Apr 27 2018 17:28:10"
-// 	}
-// ];
-
 let groupList = [
 	{
 		id: 1,
@@ -56,120 +18,6 @@ let groupList = [
 		pic: "home/images/8230192232_asdEWq2.png"
 	}
 ];
-
-// message status - 0:sent, 1:delivered, 2:read
-
-// let messages = [
-// 	{
-// 		id: 0,
-// 		sender: 2,
-// 		body: "where are you, buddy?",
-// 		time: "April 25, 2018 13:21:03",
-// 		status: 2,
-// 		recvId: 0,
-// 		recvIsGroup: false
-// 	},
-// 	{
-// 		id: 1,
-// 		sender: 0,
-// 		body: "at home",
-// 		time: "April 25, 2018 13:22:03",
-// 		status: 2,
-// 		recvId: 2,
-// 		recvIsGroup: false
-// 	},
-// 	{
-// 		id: 2,
-// 		sender: 0,
-// 		body: "how you doin'?",
-// 		time: "April 25, 2018 18:15:23",
-// 		status: 2,
-// 		recvId: 3,
-// 		recvIsGroup: false
-// 	},
-// 	{
-// 		id: 3,
-// 		sender: 3,
-// 		body: "i'm fine...wat abt u?",
-// 		time: "April 25, 2018 21:05:11",
-// 		status: 2,
-// 		recvId: 0,
-// 		recvIsGroup: false
-// 	},
-// 	{
-// 		id: 4,
-// 		sender: 0,
-// 		body: "i'm good too",
-// 		time: "April 26, 2018 09:17:03",
-// 		status: 1,
-// 		recvId: 3,
-// 		recvIsGroup: false
-// 	},
-// 	{
-// 		id: 5,
-// 		sender: 3,
-// 		body: "anyone online?",
-// 		time: "April 27, 2018 18:20:11",
-// 		status: 0,
-// 		recvId: 1,
-// 		recvIsGroup: true
-// 	},
-// 	{
-// 		id: 6,
-// 		sender: 1,
-// 		body: "have you seen infinity war?",
-// 		time: "April 27, 2018 17:23:01",
-// 		status: 1,
-// 		recvId: 0,
-// 		recvIsGroup: false
-// 	},
-// 	{
-// 		id: 7,
-// 		sender: 0,
-// 		body: "are you going to the party tonight?",
-// 		time: "April 27, 2018 08:11:21",
-// 		status: 2,
-// 		recvId: 2,
-// 		recvIsGroup: false
-// 	},
-// 	{
-// 		id: 8,
-// 		sender: 2,
-// 		body: "no, i've some work to do..are you?",
-// 		time: "April 27, 2018 08:22:12",
-// 		status: 2,
-// 		recvId: 0,
-// 		recvIsGroup: false
-// 	},
-// 	{
-// 		id: 9,
-// 		sender: 0,
-// 		body: "yup",
-// 		time: "April 27, 2018 08:31:23",
-// 		status: 1,
-// 		recvId: 2,
-// 		recvIsGroup: false
-// 	},
-// 	{
-// 		id: 10,
-// 		sender: 0,
-// 		body: "if you go to the movie, then give me a call",
-// 		time: "April 27, 2018 22:41:55",
-// 		status: 2,
-// 		recvId: 4,
-// 		recvIsGroup: false
-// 	},
-// 	{
-// 		id: 11,
-// 		sender: 1,
-// 		body: "yeah, i'm online",
-// 		time: "April 28 2018 17:10:21",
-// 		status: 0,
-// 		recvId: 1,
-// 		recvIsGroup: true
-// 	}
-// ];
-
 
 let MessageUtils = {
 	getByGroupId: (groupId) => {
@@ -222,6 +70,7 @@ const DOM = {
 	profilePicInput: getById("profile-pic-input"),
 	inputName: getById("input-name"),
 	username: getById("username"),
+	userIdLabel: getById("userIdLabel"),
 	displayPic: getById("display-pic"),
 	userNameInput: getById("user_name"),
 	btnSend: getById("btn-send"),
@@ -404,7 +253,8 @@ let generateMessageArea = (elem, chatIndex) => {
 		mClassList(elem).add("active");
 	}
 
-	DOM.messageAreaName.innerHTML = chat.name;
+	DOM.messageAreaName.innerHTML = chat.name; // put here
+	DOM.userIdLabel.innerHTML = chat.contact.id;
 	DOM.messageAreaPic.src = chat.isGroup ? chat.group.pic : chat.contact.pic;
 
 	// Message Area details ("last seen ..." for contacts / "..names.." for groups)
@@ -428,6 +278,8 @@ let generateMessageArea = (elem, chatIndex) => {
 	msgs
 		.sort((a, b) => mDate(a.time).subtract(b.time))
 		.forEach((msg) => addMessageToMessageArea(msg));
+
+	document.getElementById('btn-call').style.display = "inline-block";
 };
 
 let showChatList = () => {
@@ -500,7 +352,7 @@ async function uploadAvatar(file) {
 	const formData = new FormData();
 	formData.append("image", file);
 
-	const response = await fetch('http://localhost:3000/api/uploadAvatar', {
+	const response = await fetch('https://a8be-84-22-47-166.ngrok-free.app/api/uploadAvatar', {
 		method: 'POST',
 		body: formData
 	});
@@ -560,8 +412,18 @@ function hidePopup() {
 	document.getElementById('popup').style.display = 'none';
 }
 
+function showVideoPopup() {
+	document.getElementById('overlay').style.display = 'block';
+	document.getElementById('video-popup').style.display = 'block';
+}
+
+function hideVideoPopup() {
+	document.getElementById('overlay').style.display = 'none';
+	document.getElementById('video-popup').style.display = 'none';
+}
+
 const search = async (username) => {
-	const response = await fetch('http://localhost:3000/api/users/' + username);
+	const response = await fetch('https://a8be-84-22-47-166.ngrok-free.app/api/users/' + username);
 	const users = await response.json(); //extract JSON from the http response
 	const list = document.getElementById('user_list');
 
@@ -595,7 +457,7 @@ const search = async (username) => {
 }
 
 const getFriendRequests = async (username) => {
-	const response = await fetch('http://localhost:3000/api/friendRequests');
+	const response = await fetch('https://a8be-84-22-47-166.ngrok-free.app/api/friendRequests');
 	const friendRequests = await response.json(); //extract JSON from the http response
 
 	const count = friendRequests.length;
@@ -623,7 +485,7 @@ const getFriendRequests = async (username) => {
 }
 
 async function acceptRequest(senderId, nodeId) {
-	const response = await fetch('http://localhost:3000/api/friendRequests/accept', {
+	const response = await fetch('https://a8be-84-22-47-166.ngrok-free.app/api/friendRequests/accept', {
 		method: 'POST',
 		body: JSON.stringify({
 			senderId: senderId
@@ -684,7 +546,7 @@ async function acceptRequest(senderId, nodeId) {
 }
 
 async function rejectRequest(senderId, nodeId) {
-	const response = await fetch('http://localhost:3000/api/friendRequests/reject', {
+	const response = await fetch('https://a8be-84-22-47-166.ngrok-free.app/api/friendRequests/reject', {
 		method: 'POST',
 		body: JSON.stringify({
 			senderId: senderId
@@ -717,7 +579,7 @@ function searchUsers(event) {
 }
 
 async function addFriend(button, id) {
-	const response = await fetch('http://localhost:3000/api/users', {
+	const response = await fetch('https://a8be-84-22-47-166.ngrok-free.app/api/users', {
 		method: 'POST',
 		body: JSON.stringify({
 			userId: id

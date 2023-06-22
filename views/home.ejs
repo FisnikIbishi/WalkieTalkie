@@ -12,65 +12,6 @@
 	<link rel="stylesheet" href="/home/css/style.css">
 	<link rel="stylesheet" href="/home/css/style.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-	<style>
-		.modal {
-			display: none;
-			position: fixed;
-			z-index: 1;
-			left: 0;
-			top: 0;
-			width: 100%;
-			height: 100%;
-			overflow: auto;
-			background-color: rgb(0, 0, 0);
-			background-color: rgba(0, 0, 0, 0.9);
-		}
-
-		.modal-content {
-			margin: 15% auto;
-			padding: 20px;
-			width: 80%;
-			max-width: 600px;
-			background-color: #fefefe;
-			border: 1px solid #888;
-			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-			animation-name: animatetop;
-			animation-duration: 0.4s;
-		}
-
-		@keyframes animatetop {
-			from {
-				top: -300px;
-				opacity: 0;
-			}
-
-			to {
-				top: 0;
-				opacity: 1;
-			}
-		}
-
-		.close {
-			color: #aaa;
-			float: right;
-			font-size: 28px;
-			font-weight: bold;
-		}
-
-		.close:hover,
-		.close:focus {
-			color: black;
-			text-decoration: none;
-			cursor: pointer;
-		}
-
-		#localVideo,
-		#remoteVideo {
-			width: 100%;
-			height: auto;
-		}
-	</style>
-
 </head>
 </head>
 
@@ -84,6 +25,7 @@
 				<div class="row d-flex flex-row align-items-center p-2" id="navbar">
 					<img alt="Profile Photo" src="/images/<%= data.user.avatar %>" class="img-fluid rounded-circle mr-2"
 						style="height:50px; cursor:pointer;" onclick="showProfileSettings()" id="display-pic">
+						<div style="display: none;" id="userIdLabel"></div>
 					<div class="text-white font-weight-bold" id="username"></div>
 
 					<div class="nav-item dropdown ml-auto">
@@ -107,7 +49,6 @@
 							<span class="friend-requests-count">0</span>
 						</a>
 
-						</a>
 						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="##" role="button"
 							aria-haspopup="true" aria-expanded="false">
 							<i class="fas fa-ellipsis-v text-white"></i>
@@ -182,6 +123,13 @@
 						<div class="text-white small" id="details"></div>
 					</div>
 
+					<div class="d-flex flex-row align-items-center ml-auto">
+						<a class="nav-link dropdown-toggle" data-toggle="requests" href="#" role="button" id="btn-call" style="display: none;"
+							aria-haspopup="true" aria-expanded="false">
+							<i class="fas fa-phone" style="color: white;"></i>
+						</a>
+					</div>
+
 				</div>
 
 				<!-- Messages -->
@@ -212,17 +160,14 @@
 		</div>
 	</div>
 
-	<h1>AudioVideo Web App</h1>
+	<div class="popup" id="video-popup">
+		<span class="close" onclick="hideVideoPopup()">&times;</span>
+		<h3 id="call-label">Calling</h3>
+		<video id="localVideo" width="150" height="150" class="video" muted autoplay></video>
+		<video id="remoteVideo" width="150" height="150" class="video" autoplay></video>
 
-	<div id="localVideoContainer">
-		<video id="localVideo" autoplay muted></video>
+		<button class="reject-button" id="btn-end-call">End call</button>
 	</div>
-
-	<div id="remoteVideoContainer">
-		<video id="remoteVideo" autoplay></video>
-	</div>
-
-	<button id="btn-call">Call</button>
 
 	<div class="overlay" id="overlay"></div>
 	<div class="popup" id="popup">
@@ -245,20 +190,9 @@
 		<span class="close" onclick="hideFriendRequestsPopup()">&times;</span>
 		<h3>Friend Requests</h3>
 		<input type="text" id="friendSearchInput" placeholder="Search friend requests">
-		<ul id="friendRequestsList">
-			<!-- <li>
-				<div class="friend-request">
-					<img src="friend_avatar.jpg" alt="Friend Avatar">
-					<div class="friend-details">
-						<p class="friend-name">Test</p>
-						<p class="friend-message">Would you like to be friends?</p>
-						<button class="accept-button">Accept</button>
-						<button class="reject-button">Reject</button>
-					</div>
-				</div>
-			</li> -->
-		</ul>
+		<ul id="friendRequestsList"></ul>
 	</div>
+
 	<div class="popup1" id="userListPopup">
 		<span class="close" onclick="hideUserListPopup()">&times;</span>
 		<h3>Users List</h3>
@@ -304,19 +238,19 @@
 
 		// message status - 0:sent, 1:delivered, 2:read
 		let messages = [];
-		
-`
+
+		`
 	<% data.messages.forEach(function(message) { %>
 		${messages.push(
-		{
-			id: '<%= message._id %>',
-			sender: '<%= message.sender._id %>',
-			body: '<%= message.message %>',
-			time: '<%=message.created_at%>',
-			status: 2,
-			recvId: '<%= message.recipient._id %>',
-			recvIsGroup: false
-		})}
+			{
+				id: '<%= message._id %>',
+				sender: '<%= message.sender._id %>',
+				body: '<%= message.message %>',
+				time: '<%=message.created_at%>',
+				status: 2,
+				recvId: '<%= message.recipient._id %>',
+				recvIsGroup: false
+			})}
 		<% }) %>
 `;
 
@@ -363,120 +297,6 @@
 	<script src="/home/js/date-utils.js"></script>
 	<script src="/home/js/script.js"></script>
 	<script src="/client.js"></script>
-
-
-	<!-- <script>
-		// Use an offscreen canvas as the video source.
-		const canvas = document.createElement('canvas');
-		const context = canvas.getContext('2d');
-		let color = 0;
-		const draw = () => {
-			color = (color + 2) % 255;
-			context.fillStyle = `rgb(${color}, 0, 0)`;
-			context.fillRect(0, 0, 300, 150);
-			requestAnimationFrame(draw);
-		}
-		draw();
-
-		const localVideo = document.getElementById('local');
-		const stream = canvas.captureStream();
-		localVideo.srcObject = stream;
-
-		const peerConnection = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
-
-		stream.getTracks().forEach(t => peerConnection.addTrack(t, stream));
-
-		// Save a list of ice candidates to send to the peer
-		const iceCandidates = [];
-		peerConnection.onicecandidate = e => {
-			if (e.candidate) {
-				iceCandidates.push(e.candidate);
-			}
-		};
-
-		peerConnection.ontrack = e => {
-			document.getElementById('remote').srcObject = e.streams[0];
-		};
-
-		(async () => {
-			const copyButton = document.getElementById('copy');
-
-			peerConnection.onicegatheringstatechange = () => {
-				if (peerConnection.iceGatheringState === 'complete') {
-					copyButton.disabled = false;
-					console.log('Offer ready, click copy button.');
-				}
-			};
-
-			const offer = await peerConnection.createOffer();
-			await peerConnection.setLocalDescription(offer);
-
-			const pasteInput = document.getElementById('paste');
-
-			copyButton.onclick = () => {
-				navigator.clipboard.writeText(JSON.stringify({ offer, iceCandidates }));
-				console.log('Offer copied/candidates. Paste in Answerer example.');
-
-				pasteInput.disabled = false;
-			};
-
-			pasteInput.onpaste = async (e) => {
-				const { answer, iceCandidates } = JSON.parse(e.clipboardData.getData('text/plain'));
-				await peerConnection.setRemoteDescription(answer);
-				iceCandidates.forEach(c => peerConnection.addIceCandidate(c));
-			};
-		})();
-	</script>
-
-
-
-
-
-	<script>
-		const localVideo = document.getElementById('local');
-		const stream = canvas.captureStream();
-		localVideo.srcObject = stream;
-
-		const peerConnection = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
-
-		stream.getTracks().forEach(t => peerConnection.addTrack(t, stream));
-
-		// Save a list of ice candidates to send to the peer
-		const iceCandidates = [];
-		peerConnection.onicecandidate = e => {
-			if (e.candidate) {
-				iceCandidates.push(e.candidate);
-			}
-		};
-
-		peerConnection.ontrack = e => {
-			document.getElementById('remote').srcObject = e.streams[0];
-		};
-
-		const copyButton = document.getElementById('copy');
-
-		document.getElementById('paste').onpaste = async (e) => {
-			const { offer, iceCandidates } = JSON.parse(e.clipboardData.getData('text/plain'));
-
-			peerConnection.onicegatheringstatechange = () => {
-				if (peerConnection.iceGatheringState === 'complete') {
-					copyButton.disabled = false;
-					console.log('Answer ready, click copy button.');
-				}
-			};
-
-			await peerConnection.setRemoteDescription(offer);
-			const answer = await peerConnection.createAnswer();
-			await peerConnection.setLocalDescription(answer);
-
-			copyButton.onclick = () => {
-				navigator.clipboard.writeText(JSON.stringify({ answer, iceCandidates }));
-				console.log('Copied answer/candidates. Paste in Offerer example.');
-			};
-
-			iceCandidates.forEach(c => peerConnection.addIceCandidate(c));
-		};
-	</script> -->
 </body>
 
 </html>

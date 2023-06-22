@@ -83,21 +83,21 @@ io.on('connection', (socket) => {
     socket.broadcast.emit(msg.recvId + "_new_message", msg);
   });
 
-  socket.on('call', (offer) => {
-    socket.broadcast.emit("call", offer);
+  socket.on('offer', (offer) => {
+    socket.broadcast.emit("offer", offer);
   });
 
   socket.on('answer', (answer) => {
+    console.log('answer ' + answer)
     socket.broadcast.emit("answer", answer);
   });
 
-  socket.on('newUser', (id) => {
-    socket.broadcast.emit("userJoined", id);
+  socket.on('ice-candidate', (candidate) => {
+    socket.broadcast.emit('ice-candidate', candidate);
   });
 
-
-  socket.on('ice candidates', (candidate) => {
-    socket.broadcast.emit('ice candidates', candidate);
+  socket.on('end-call', (state) => {
+    socket.broadcast.emit('end-call', state);
   });
 
   // Handle socket disconnections
