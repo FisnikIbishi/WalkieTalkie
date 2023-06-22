@@ -5,6 +5,8 @@ const FriendRequest = require('../models/friendRequest');
 const Friend = require('../models/friend');
 const Message = require('../models/message');
 const Role = require('../_helpers/role');
+const Disease = require('../models/disease');
+const SubDisease = require('../models/subdisease');
 
 module.exports = {
     saveAvatar: async function (userId, avatar) {
@@ -116,6 +118,60 @@ module.exports = {
         )
         newMessage.save();
         return { message: 'Friend request accepted!' }
+    },
+    getDiseases: async function (req, res) {
+        const diseases = await Disease.find({}, { __v: 0, created_at: 0, recipient: 0 });
+        const subDiseases = await SubDisease.find({}, { __v: 0 }).populate('diseaseId', 'name diseaseId');
+        return { diseases: diseases, subDiseases: subDiseases }
+    },
+    addDisease: async function (name) {
+        const disease = new Disease(
+            {
+                name: name
+            }
+        )
+        disease.save();
+
+        console.log('disease ' + disease)
+        const diseases = await Disease.find({}, { __v: 0, created_at: 0, recipient: 0 });
+        const subDiseases = await SubDisease.find({}, { __v: 0 }).populate('diseaseId', 'name diseaseId');
+
+        return { diseases: diseases, subDiseases: subDiseases }
+    },
+    deleteDisease: async function (diseaseId) {
+        await SubDisease.findOneAndRemove({ diseaseId: diseaseId });
+       await Disease.findOneAndRemove({ _id: diseaseId });
+
+        const diseases = await Disease.find({}, { __v: 0, created_at: 0, recipient: 0 });
+        const subDiseases = await SubDisease.find({}, { __v: 0 }).populate('diseaseId', 'name diseaseId');
+
+        return { diseases: diseases, subDiseases: subDiseases }
+    },
+    addSubDisease: async function (diseaseId, name) {
+        const subDisease = new SubDisease(
+            {
+                name: name,
+                diseaseId: diseaseId
+            }
+        )
+        subDisease.save();
+
+        const diseases = await Disease.find({}, { __v: 0, created_at: 0, recipient: 0 });
+        const subDiseases = await SubDisease.find({}, { __v: 0 }).populate('diseaseId', 'name diseaseId');
+
+        return { diseases: diseases, subDiseases: subDiseases }
+    },
+    getDisease: async function (diseaseId) {
+       return await Disease.findOne({ _id: diseaseId });
+    },
+    editDisease: async function (diseaseId, name) {
+        const updatedDisease = await Disease
+            .findOneAndUpdate({ _id: diseaseId }, { name: name }, { new: true });
+
+        const diseases = await Disease.find({}, { __v: 0, created_at: 0, recipient: 0 });
+        const subDiseases = await SubDisease.find({}, { __v: 0 }).populate('diseaseId', 'name diseaseId');
+
+        return { diseases: diseases, subDiseases: subDiseases }
     },
     logOut: async function (userId) {
         return await User

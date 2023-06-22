@@ -352,7 +352,7 @@ async function uploadAvatar(file) {
 	const formData = new FormData();
 	formData.append("image", file);
 
-	const response = await fetch('https://a8be-84-22-47-166.ngrok-free.app/api/uploadAvatar', {
+	const response = await fetch('http://localhost:3000/api/uploadAvatar', {
 		method: 'POST',
 		body: formData
 	});
@@ -423,7 +423,7 @@ function hideVideoPopup() {
 }
 
 const search = async (username) => {
-	const response = await fetch('https://a8be-84-22-47-166.ngrok-free.app/api/users/' + username);
+	const response = await fetch('http://localhost:3000/api/users/' + username);
 	const users = await response.json(); //extract JSON from the http response
 	const list = document.getElementById('user_list');
 
@@ -457,7 +457,7 @@ const search = async (username) => {
 }
 
 const getFriendRequests = async (username) => {
-	const response = await fetch('https://a8be-84-22-47-166.ngrok-free.app/api/friendRequests');
+	const response = await fetch('http://localhost:3000/api/friendRequests');
 	const friendRequests = await response.json(); //extract JSON from the http response
 
 	const count = friendRequests.length;
@@ -485,7 +485,7 @@ const getFriendRequests = async (username) => {
 }
 
 async function acceptRequest(senderId, nodeId) {
-	const response = await fetch('https://a8be-84-22-47-166.ngrok-free.app/api/friendRequests/accept', {
+	const response = await fetch('http://localhost:3000/api/friendRequests/accept', {
 		method: 'POST',
 		body: JSON.stringify({
 			senderId: senderId
@@ -546,7 +546,7 @@ async function acceptRequest(senderId, nodeId) {
 }
 
 async function rejectRequest(senderId, nodeId) {
-	const response = await fetch('https://a8be-84-22-47-166.ngrok-free.app/api/friendRequests/reject', {
+	const response = await fetch('http://localhost:3000/api/friendRequests/reject', {
 		method: 'POST',
 		body: JSON.stringify({
 			senderId: senderId
@@ -579,7 +579,7 @@ function searchUsers(event) {
 }
 
 async function addFriend(button, id) {
-	const response = await fetch('https://a8be-84-22-47-166.ngrok-free.app/api/users', {
+	const response = await fetch('http://localhost:3000/api/users', {
 		method: 'POST',
 		body: JSON.stringify({
 			userId: id

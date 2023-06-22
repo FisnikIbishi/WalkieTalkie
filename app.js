@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 const index = require('./routes/home');
 const login = require('./routes/login');
 const register = require('./routes/register');
+const disease = require('./routes/disease');
 const path = require('path');
 const socketIO = require('socket.io');
 require('dotenv').config();
@@ -39,6 +40,7 @@ app.use(express.static(__dirname + '/public'));
 app.use(index);
 app.use(login);
 app.use(register);
+app.use(disease);
 
 //Set up default mongoose connection
 mongoose.connect(process.env.MONGODB_URL).then(() => {

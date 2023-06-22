@@ -7,7 +7,7 @@ const Role = require('../_helpers/role');
 
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
-  avatar: { type: String, required: false , default: 'default_avatar.png'},
+  avatar: { type: String, required: false, default: 'default_avatar.png' },
   email: { type: String, required: true, unique: true },
   password: {
     type: String,
